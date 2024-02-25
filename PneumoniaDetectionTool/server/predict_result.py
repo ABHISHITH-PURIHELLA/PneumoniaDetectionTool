@@ -2,7 +2,7 @@ from tensorflow import keras
 import numpy as np
 from PIL import Image
 
-def load_saved_model(model_path="vgg16_fine_tuning"):
+def load_saved_model(model_path="C:\\PneumoniaDetectionTool\\PneumoniaDetectionTool\\resnet152v2_feature_extraction_final_best_model"):
     print('Loading Model at:', model_path)
     model = keras.models.load_model(model_path)
     print('Model Loaded Successfully')
