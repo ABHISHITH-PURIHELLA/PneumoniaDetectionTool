@@ -4,7 +4,7 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const { predictResult, loadSavedModel } = require('./predict.cjs'); // Update with your actual import paths
+const { predictResult, loadSavedModel } = require('./predict.cjs'); 
 
 const app = express();
 app.use(cors());
@@ -22,7 +22,7 @@ app.use(fileUpload({
 app.use('/static', express.static(UPLOAD_FOLDER));
 
 // LOAD MODEL ON APP START
-const ML_MODEL = loadSavedModel();
+//const ML_MODEL = loadSavedModel();
 
 // Helper function to check allowed file types
 const allowedFile = (filename) => {
@@ -50,8 +50,10 @@ app.post('/upload', (req, res) => {
       if (err) {
         return res.status(500).send(err);
       }
+      console.log('Calling Python script for prediction...');
       try {
         const predictionResult = await predictResult(savePath, ML_MODEL);
+        console.log('Prediction result:', predictionResult);
         predictionResult.probability = (predictionResult.probability * 100).toFixed(2) + '%';
         res.json({
           image_path: `/static/uploads/${filename}`,

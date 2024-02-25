@@ -14,7 +14,7 @@ const TestPage = ({ onGoBack }) => {
       const formData = new FormData();
       formData.append('image_upload', selectedImage);
 
-      fetch('/', { // Update this URL to your Flask server's URL
+      fetch('http://localhost:3001/upload', { // Update this URL to your Flask server's URL
         method: 'POST',
         body: formData,
       })
