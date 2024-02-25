@@ -1,52 +1,58 @@
-// predict.js
-const tf = require('@tensorflow/tfjs-node'); // or '@tensorflow/tfjs' for GPU support
-const fs = require('fs');
-const jpeg = require('jpeg-js');
+/*const { spawn } = require('child_process');
 
-const loadSavedModel = async (modelPath = 'resnet152v2_feature_extraction_final_best_model') => {
-  console.log('Loading Model at:', modelPath);
-  const model = await tf.loadLayersModel(`file://${modelPath}/model.json`);
-  console.log('Model Loaded Successfully');
-  return model;
+// Function to call the Python script and get the prediction
+//imagePath = "C:/Users/purih/Downloads/NORMAL2-IM-1427-0001.jpeg"
+function predictResult(imagePath, modelPath = 'resnet152v2_feature_extraction_final_best_model') {
+  return new Promise((resolve, reject) => {
+    const pythonProcess = spawn('python', ['./predictResult.py', imagePath, modelPath]);
+
+    let dataString = '';
+    pythonProcess.stdout.on('data', (data) => {
+      dataString += data.toString();
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+      if (code !== 0) {
+        return reject(new Error(`Python script exited with code ${code}`));
+      }
+      try {
+        const result = JSON.parse(dataString);
+        resolve(result);
+      } catch (error) {
+        reject(new Error('Failed to parse Python script output'));
+      }
+    });
+  });
+}*/
+
+const { spawn } = require('child_process');
+
+const predictResult = (imagePath) => {
+  return new Promise((resolve, reject) => {
+    const process = spawn('python', ['predictResult.py', imagePath]);
+
+    let dataStr = '';
+    process.stdout.on('data', (data) => {
+      dataStr += data.toString();
+    });
+
+    process.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error('Python script exited with code ' + code));
+        return;
+      }
+
+      try {
+        const result = JSON.parse(dataStr);
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
 };
 
-const readAndPreprocessImage = (imagePath) => {
-  console.log('Reading Image from:', imagePath);
-  const imageBuffer = fs.readFileSync(imagePath);
-  const imageData = jpeg.decode(imageBuffer, true);
-  console.log('Image Loaded Successfully');
-
-  if (imageData.width * imageData.height * 3 !== imageData.data.length) {
-    throw new Error('Uploaded Image is grayscale(has only 2 color channels) and cannot be processed!');
-  }
-
-  const numChannels = 3;
-  const imageTensor = tf.node.decodeImage(imageBuffer, numChannels).resizeNearestNeighbor([224, 224]).toFloat().div(tf.scalar(255)).expandDims();
-  console.log('Resized Image Shape:', imageTensor.shape);
-  return imageTensor;
-};
-
-const predictResult = async (imgPath, model = null) => {
-  if (!model) {
-    model = await loadSavedModel();
-  }
-
-  const imageTensor = readAndPreprocessImage(imgPath);
-  const prediction = model.predict(imageTensor);
-  const predicted_proba = await prediction.dataSync()[0];
-  let predicted_class = "NORMAL";
-  if (predicted_proba > 0.5) {
-    predicted_class = "PNEUMONIA";
-  } else {
-    predicted_proba = 1 - predicted_proba;
-  }
-
-  const return_dict = {
-    'probability': predicted_proba,
-    'most_probable_class': predicted_class
-  };
-  console.log("Prediction Result:", return_dict);
-  return return_dict;
-};
-
-module.exports = { predictResult, loadSavedModel };
