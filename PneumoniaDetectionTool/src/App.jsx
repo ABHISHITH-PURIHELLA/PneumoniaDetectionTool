@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import TestPage from './testpage'; // Make sure this import matches your file name, and the component name is capitalized
+import { Routes, Route, Link } from 'react-router-dom';
+import { LoginModal, SignupModal } from './authPages.jsx';
+import TestPage from './testpage'; 
+import InfoPage from './infoPage.jsx';
 import './App.css'; 
+
 
 const App = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -30,6 +37,7 @@ const App = () => {
   };
 
   return (
+    
     <div className="home-container">
       <nav className="navigation">       
         <div className="logo">ToolAtYour'Tip</div>
@@ -45,12 +53,25 @@ const App = () => {
           )}
         </div>
         <div className="auth-buttons">
-          <button className="login-button">Log in</button>
-          <button className="signup-button">Sign up</button>
+          <button className="login-button" onClick={() => setShowLoginModal(true)}>Log in</button>
+          <button className="signup-button" onClick={() => setShowSignupModal(true)}>Sign up</button>
         </div>
       </nav>
       {renderContent()}
+      {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} onSuccess={() => setCurrentPage('home')} />}
+      {showSignupModal && <SignupModal onClose={() => setShowSignupModal(false)} onSuccess={() => setCurrentPage('home')} />}
+      <Routes>
+        
+        <Route path="/test" element={<TestPage />} />
+        <Route path="/info" element={<InfoPage />} />
+      </Routes>
+      <footer className="footer-links">
+        <Link to="/info#diagnostic-centers" setCurrentPage="InfoPage">List of Diagnostic Centers</Link>
+        <Link to="/info#contact-us">Contact Us</Link>
+      </footer>
+      
     </div>
+    
   );
 };
 

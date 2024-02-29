@@ -1,4 +1,3 @@
-// TestPage.jsx
 import React, { useState } from 'react';
 
 const TestPage = ({ onGoBack }) => {
@@ -29,13 +28,13 @@ const TestPage = ({ onGoBack }) => {
   };
 
   return (
-    <div>
-      <h1>Take a Test</h1>
-      <input type="file" onChange={handleImageChange} accept="image/*" />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      <h1>Upload the X-Ray</h1>
+      <input type="file" onChange={handleImageChange} accept="image/*" style={{ marginBottom: '10px', margin: '20px' }}/>
       {selectedImage && (
-        <div>
-          <img src={URL.createObjectURL(selectedImage)} alt="Preview" />
-          <button onClick={handleSubmit}>Submit Image</button>
+        <div style={{ textAlign: 'center' }}>
+          <img src={URL.createObjectURL(selectedImage)} alt="Preview" style={{ maxWidth: '15%', height: 'auto', marginBottom: '10px' }} />
+          <button onClick={handleSubmit} style={{ display: 'block', margin: 'auto' }}>Submit Image</button>
         </div>
       )}
       {predictionResult && (
@@ -44,7 +43,7 @@ const TestPage = ({ onGoBack }) => {
           <p>Probability: {predictionResult.probability}%</p>
         </div>
       )}
-      <button onClick={onGoBack}>Go Back</button>
+      <button onClick={onGoBack} style={{ marginTop: '10px' }}>Go Back</button>
     </div>
   );
 };
