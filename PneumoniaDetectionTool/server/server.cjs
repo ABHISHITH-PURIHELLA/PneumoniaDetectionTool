@@ -50,9 +50,13 @@ app.post('/upload', (req, res) => {
       if (err) {
         return res.status(500).send(err);
       }
-      console.log('Calling Python script for prediction...');
+      // Log the savePath to verify its correctness
+    console.log('Saving Image at:', savePath);
+    console.log('About to call Python script with savePath:', savePath);
+
+    console.log('Calling Python script for prediction...');
       try {
-        const predictionResult = await predictResult(savePath, ML_MODEL);
+        const predictionResult = await predictResult(savePath);
         console.log('Prediction result:', predictionResult);
         predictionResult.probability = (predictionResult.probability * 100).toFixed(2) + '%';
         res.json({
@@ -61,6 +65,7 @@ app.post('/upload', (req, res) => {
           prediction_result: predictionResult
         });
       } catch (error) {
+        console.error('Error calling predictResult:', error);
         res.status(500).send(error.message);
       }
     });

@@ -11,6 +11,8 @@ def load_saved_model(model_path="C:\\PneumoniaDetectionTool\\PneumoniaDetectionT
 def read_and_preprocess_image():
     print('Reading Image from:', "C:/Users/purih/Downloads/NORMAL2-IM-1427-0001.jpeg")
     im = Image.open("C:/Users/purih/Downloads/NORMAL2-IM-1427-0001.jpeg")
+    #im = Image.open("C:/Users/purih/OneDrive/Desktop/Project_597/PneumoniaDetectionTool/PneumoniaDetectionTool/server/static/uploads/2e822e93-ed43-44e5-999a-a641219fe5cf.jpeg")
+
     print('Image Loaded Successfully')
     if im.mode == 'RGB':
         print("The image is in RGB format.")
