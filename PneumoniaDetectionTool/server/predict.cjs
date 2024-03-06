@@ -30,11 +30,14 @@ function predictResult(imagePath, modelPath = 'resnet152v2_feature_extraction_fi
 }*/
 
 const { spawn } = require('child_process');
-
+const path = require('path');
+const scriptPath = path.join(__dirname, 'predictResult.py'); // Adjust the path as necessary
 const predictResult = (imagePath) => {
-  const pythonEnvPath = 'C:/Users/purih/OneDrive/Desktop/Project_597/myproject/Scripts/python.exe'
+  const pythonEnvPath = 'C:/Users/purih/OneDrive/Desktop/Project_597/myproject/Scripts/python.exe';
+  
+  
   return new Promise((resolve, reject) => {
-    const process = spawn(pythonEnvPath, ['predictResult.py', imagePath]);
+    const process = spawn(pythonEnvPath, [scriptPath, imagePath]);
 
     let dataStr = '';
     /*process.stdout.on('data', (data) => {

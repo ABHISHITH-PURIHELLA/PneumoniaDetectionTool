@@ -43,7 +43,7 @@ app.post('/upload', (req, res) => {
 
   if (allowedFile(file.name)) {
     const filename = uuidv4() + path.extname(file.name);
-    const savePath = path.join(UPLOAD_FOLDER, filename);
+    const savePath = path.join(UPLOAD_FOLDER, filename).replace(/\\/g, '/');;
     console.log('Saving Image at:', savePath);
 
     file.mv(savePath, async (err) => {

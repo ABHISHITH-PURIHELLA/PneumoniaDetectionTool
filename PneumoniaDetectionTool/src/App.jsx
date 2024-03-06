@@ -26,7 +26,7 @@ const App = () => {
     if (currentPage === 'test') {
       return <TestPage onGoBack={() => setCurrentPage('home')} />;
     } else {
-      // The rest of your home page content
+      // The rest of the home page content
       return (
         <header className="header">
           <h1>A Guide for your well being.</h1>
