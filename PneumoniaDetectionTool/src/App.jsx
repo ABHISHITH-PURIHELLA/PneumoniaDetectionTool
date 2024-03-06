@@ -26,7 +26,7 @@ const App = () => {
     if (currentPage === 'test') {
       return <TestPage onGoBack={() => setCurrentPage('home')} />;
     } else {
-      // The rest of your home page content
+      // The rest of the home page content
       return (
         <header className="header">
           <h1>A Guide for your well being.</h1>
@@ -53,6 +53,8 @@ const App = () => {
           )}
         </div>
         <div className="auth-buttons">
+          <a href="/">Home</a>
+          
           <button className="login-button" onClick={() => setShowLoginModal(true)}>Log in</button>
           <button className="signup-button" onClick={() => setShowSignupModal(true)}>Sign up</button>
         </div>
@@ -66,7 +68,7 @@ const App = () => {
         <Route path="/info" element={<InfoPage />} />
       </Routes>
       <footer className="footer-links">
-        <Link to="/info#diagnostic-centers" setCurrentPage="InfoPage">List of Diagnostic Centers</Link>
+        <Link to="/info#diagnostic-centers">List of Diagnostic Centers</Link>
         <Link to="/info#contact-us">Contact Us</Link>
       </footer>
       
