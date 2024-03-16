@@ -77,6 +77,7 @@ if __name__ == "__main__":
         #print(json.dumps(result))
         print(result)
     except Exception as e:
+        #print(f"Exception: {str(e)}", file=sys.stderr)
         traceback.print_exc()
         sys.exit(1)
 

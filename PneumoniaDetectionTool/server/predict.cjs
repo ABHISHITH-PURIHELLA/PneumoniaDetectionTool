@@ -50,12 +50,14 @@ const predictResult = (imagePath) => {
     
     process.stderr.on('data', (data) => {
       console.error(`stderr: ${data.toString()}`);
+      //reject(new Error(data.toString().trim()));
     });
     
 
     process.on('close', (code) => {
       console.log(`Python script exited with code ${code}`);
       if (code !== 0) {
+        //reject(new Error(errorData.trim()));
         reject(new Error('Python script exited with code ' + code));
         return;
       }

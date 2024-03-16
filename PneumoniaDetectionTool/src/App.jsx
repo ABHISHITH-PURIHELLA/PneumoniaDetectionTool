@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import { LoginModal, SignupModal } from './authPages.jsx';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { LoginForm, SignUpForm } from './authPages.jsx';
 import TestPage from './testpage'; 
 import InfoPage from './infoPage.jsx';
 import './App.css'; 
@@ -9,8 +9,13 @@ import './App.css';
 const App = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showLoginForm, setShowLoginModal] = useState(false);
+  const [showSignUpForm, setShowSignupModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleTakeTestClick = () => {
+    navigate('/test'); // This navigates to the TestPage
+  };
 
 
   const toggleDropdown = () => {
@@ -19,6 +24,7 @@ const App = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    //navigate(`/${page}`);
     setDropdownOpen(false); // Close the dropdown when an item is clicked
   };
 
@@ -30,11 +36,17 @@ const App = () => {
       return (
         <header className="header">
           <h1>A Guide for your well being.</h1>
-          {/* Other content of your home page */}
+          
         </header>
       );
     }
   };
+
+  const openSignUpModal = () => {
+    setShowLoginModal(false);
+    setShowSignupModal(true);
+  };
+
 
   return (
     
@@ -45,27 +57,30 @@ const App = () => {
           <button className="menu-button" onClick={toggleDropdown}>Menu</button>
           {dropdownOpen && (
             <div className="dropdown">
-              {/* Update the click handler here */}
-              <button className="dropdown-item" onClick={() => handlePageChange('test')}>Take a Test</button>
+              
+              {/*<button className="dropdown-item" onClick={() => handlePageChange('test')}>Take a Test</button>*/}
+              <button className="dropdown-item" onClick={handleTakeTestClick}>Take a Test</button>
               <a href="#instructions" className="dropdown-item">Instructions for Test</a>
-              <a href="#info" className="dropdown-item">Info</a>
+              
+              <button className="dropdown-item" onClick={() => navigate('/info')}>Info</button>
             </div>
           )}
         </div>
         <div className="auth-buttons">
-          <a href="/">Home</a>
-          
+          {/*<a href="/">Home</a>*/}
+          <Link to="/">Home</Link>         
           <button className="login-button" onClick={() => setShowLoginModal(true)}>Log in</button>
           <button className="signup-button" onClick={() => setShowSignupModal(true)}>Sign up</button>
         </div>
       </nav>
       {renderContent()}
-      {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} onSuccess={() => setCurrentPage('home')} />}
-      {showSignupModal && <SignupModal onClose={() => setShowSignupModal(false)} onSuccess={() => setCurrentPage('home')} />}
+      {showLoginForm && <LoginForm onClose={() => setShowLoginModal(false)} onSignUpClick={openSignUpModal} onSuccess={() => setCurrentPage('home')} />}
+      {showSignUpForm && <SignUpForm onClose={() => setShowSignupModal(false)} onSuccess={() => setCurrentPage('home')} />}
       <Routes>
         
         <Route path="/test" element={<TestPage />} />
         <Route path="/info" element={<InfoPage />} />
+        
       </Routes>
       <footer className="footer-links">
         <Link to="/info#diagnostic-centers">List of Diagnostic Centers</Link>
@@ -78,3 +93,6 @@ const App = () => {
 };
 
 export default App;
+
+
+
