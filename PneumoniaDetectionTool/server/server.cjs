@@ -49,6 +49,8 @@ app.post('/upload', (req, res) => {
     file.mv(savePath, async (err) => {
       if (err) {
         return res.status(500).send(err);
+        //console.error('Error saving the file:', err);
+        //return res.status(500).send('Error saving the file.');
       }
       // Log the savePath to verify its correctness
     console.log('Saving Image at:', savePath);

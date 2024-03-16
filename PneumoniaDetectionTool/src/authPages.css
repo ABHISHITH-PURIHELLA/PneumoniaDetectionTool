@@ -1,0 +1,112 @@
+.homePageBody, .signUpPageBody {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-image: url('../../Assets/Asset4.jpeg');
+  background-repeat: repeat-y;
+  animation: scrollBackground 20s linear infinite;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes scrollBackground {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 0 -100%, 0 0, 0 0, 0 0; }
+}
+
+.wrapper {
+  width: 420px;
+  background: rgba(190, 36, 36, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(25px);
+  color: #080808;
+  border-radius: 40px;
+  padding: 30px 40px;
+  box-shadow: 0 0 30px rgba(6, 250, 71, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+.wrapper .input-box {
+  position: relative;
+  width: 100%;
+  padding: 15px;
+}
+
+.input-box input {
+  width: 100%;
+  background: transparent;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #000; /* Changed to black */
+  padding: 10px 35px 20px 20px;
+}
+
+.input-box input::placeholder {
+  color: #000; /* Changed to black */
+}
+
+.input-box .icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+
+.wrapper button {
+  width: 100%;
+  height: 45px;
+  background: #fff;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 700;
+}
+
+.wrapper .register-link, .register-link p a {
+  text-align: center;
+  color: #000; /* Adjusted for consistency */
+  margin-top: 20px;
+  font-size: large;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.login-button, .close-button {
+  padding: 8px 16px;
+  margin: 0;
+  width: auto; /* Allow the buttons to size according to their content */
+}
