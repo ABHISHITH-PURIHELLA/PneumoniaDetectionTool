@@ -1,13 +1,17 @@
 // server/index.js
+
+
+
 const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const { predictResult, loadSavedModel } = require('./predict.cjs'); 
-
+const attachDiagnosticsRoutes = require('./diagnosticsServer.cjs');
 const app = express();
 app.use(cors());
+app.use(express.json());
 const UPLOAD_FOLDER = path.join(__dirname, 'static/uploads');
 const ALLOWED_EXT = new Set(['png', 'jpg', 'jpeg']);
 
@@ -76,6 +80,9 @@ app.post('/upload', (req, res) => {
   }
 });
 
+
+attachDiagnosticsRoutes(app);
+//app.use(disgnosticServer)
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

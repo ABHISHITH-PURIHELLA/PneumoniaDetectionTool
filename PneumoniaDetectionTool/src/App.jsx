@@ -12,14 +12,31 @@ const App = () => {
   const [showLoginForm, setShowLoginModal] = useState(false);
   const [showSignUpForm, setShowSignupModal] = useState(false);
   const navigate = useNavigate();
+  
 
   const handleTakeTestClick = () => {
     navigate('/test'); // This navigates to the TestPage
+    setDropdownOpen(false);
   };
 
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+    
+  };
+  const handleDropdownItemClick =() =>{
+    setDropdownOpen(false);
+  }
+  const handleNavigateToInfo = () => {
+    navigate('/info');
+    handleDropdownItemClick(); // Reuse the logic to close the dropdown
+  };
+
+  const handleBlur = (event) => {
+    // Check if the new focused element is not within the dropdown
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setDropdownOpen(false);
+    }
   };
 
   const handlePageChange = (page) => {
@@ -51,24 +68,25 @@ const App = () => {
   return (
     
     <div className="home-container">
-      <nav className="navigation">       
-        <div className="logo">ToolAtYour'Tip</div>
-        <div className="menu-container">
-          <button className="menu-button" onClick={toggleDropdown}>Menu</button>
+      <nav className="navigation">   
+      <div className="menu-container" onBlur={handleBlur} tabIndex="0">
+          <button className="menu-button"  onClick={toggleDropdown} >Menu</button>
           {dropdownOpen && (
             <div className="dropdown">
               
               {/*<button className="dropdown-item" onClick={() => handlePageChange('test')}>Take a Test</button>*/}
               <button className="dropdown-item" onClick={handleTakeTestClick}>Take a Test</button>
-              <a href="#instructions" className="dropdown-item">Instructions for Test</a>
+              <a href="#instructions" className="dropdown-item" onClick={handleDropdownItemClick}>Instructions for Test</a>
               
-              <button className="dropdown-item" onClick={() => navigate('/info')}>Info</button>
+              <button className="dropdown-item" onClick={handleNavigateToInfo}>Info</button>
             </div>
           )}
-        </div>
+        </div>    
+        <div className="logo">ToolAtYour'Tip</div>
+        
         <div className="auth-buttons">
           {/*<a href="/">Home</a>*/}
-          <Link to="/">Home</Link>         
+          <Link to="/" className='login-button'>Home</Link>         
           <button className="login-button" onClick={() => setShowLoginModal(true)}>Log in</button>
           <button className="signup-button" onClick={() => setShowSignupModal(true)}>Sign up</button>
         </div>

@@ -43,8 +43,11 @@ html, body {
   background: none;
   border: 1px solid black;
   color: black;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1rem;
   cursor: pointer;
+  width: 150px ;
+  align-items:center ;
+  
 }
 
 .dropdown {
