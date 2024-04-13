@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { LoginForm, SignUpForm } from './authPages.jsx';
 import TestPage from './testpage'; 
@@ -7,6 +7,28 @@ import './App.css';
 
 
 const App = () => {
+
+  useEffect(() => {
+    // Function to generate random colors for the gradient
+    function updateBackgroundGradient() {
+      const hueStart = Math.floor(Math.random() * 360);
+      const hueEnd = (hueStart + Math.floor(Math.random() * 180)) % 360;
+      const colorStart = `hsl(${hueStart}, 70%, 85%)`;
+      const colorEnd = `hsl(${hueEnd}, 70%, 55%)`;
+
+      // Set the new colors as CSS variables
+      document.documentElement.style.setProperty('--gradient-start', colorStart);
+      document.documentElement.style.setProperty('--gradient-end', colorEnd);
+    }
+
+    // Update the background gradient every 10 seconds
+    updateBackgroundGradient();
+    const intervalId = setInterval(updateBackgroundGradient, 10000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
   const [showLoginForm, setShowLoginModal] = useState(false);

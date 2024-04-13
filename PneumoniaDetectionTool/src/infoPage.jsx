@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import './App.css';
+import './infoPage.css';
 
 const InfoPage = () => {
   const [areaCode, setAreaCode] = useState('');
@@ -52,6 +52,7 @@ const InfoPage = () => {
     
     <div className='info-page-container'>
       <section id="diagnostic-centers">
+        <div className='diagnostic-centers-title'>
         <h2>List of Diagnostic Centers</h2>
         <form onSubmit={handleSearch} style={{margin: '20px 0'}}>
           <input
@@ -62,29 +63,38 @@ const InfoPage = () => {
             style={{marginRight: '10px'}}
           />
           <button type="submit">Search</button>
-        </form>
+          
+        </form> </div>
         
-        {clinics.length > 0 ? (
-          clinics.map((clinic, index) => (
-            <div key={index}>
-              <h3>{clinic.name ?? 'Not available'}</h3>
-              <p>{clinic.houseNumber ?? ''} {clinic.street ?? ''}, {clinic.city ?? ''}, {clinic.state}, {clinic.postcode ?? ''}</p>
-              <p>Email: {clinic.email ?? 'Not available'}</p>
-              <p>Phone: {clinic.phone ?? 'Not available'}</p>
-              <p>Website: {clinic.website ? <a href={clinic.website} target="_blank" rel="noopener noreferrer">{clinic.website}</a> : 'Not available'}</p>
-              <p>Opening Hours: {clinic.openingHours ?? 'Not available'}</p>
-            </div>
-          ))
-        ) : (
-          <p>No clinics found for the given area code.</p>
-        )}
+        <div className="card-container">
+          {clinics.length > 0 ? (
+            clinics.map((clinic, index) => (
+              <div key={index} className="card">
+                <h3>{clinic.name ?? 'Not available'}</h3>
+                <p>{clinic.houseNumber ?? ''} {clinic.street ?? ''}, {clinic.city ?? ''}, {clinic.state ?? ''}, {clinic.postcode ?? ''}</p>
+                <p>Email: {clinic.email ?? 'Not available'}</p>
+                <p>Phone: {clinic.phone ?? 'Not available'}</p>
+                {clinic.website && (
+                  <p>Website: <a href={clinic.website} target="_blank" rel="noopener noreferrer">{clinic.website}</a></p>
+                )}
+                <p>Opening Hours: {clinic.openingHours ?? 'Not available'}</p>
+              </div>
+            ))
+          ) : (
+            <p>No clinics found for the given area code.</p>
+          )}
+        </div>
       
 
       </section>
-      <section id="contact-us">
-        <h2>Contact Us</h2>
-        {/* Content for Contact Us */}
+      <section id="contact-us" className="contact-us-container">
+       <div className="scrolling-container">
+        <div className="scrolling-content">
+         <p>At your service: ABHI || Contact Info: +1 657 799 8493 || E-mail: yourTool@atYourService.com || Available: Anytime to Help</p>
+        </div>
+       </div>
       </section>
+
     </div>
   );
 };
