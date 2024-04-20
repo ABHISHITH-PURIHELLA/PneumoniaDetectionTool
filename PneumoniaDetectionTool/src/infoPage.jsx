@@ -11,7 +11,7 @@ const InfoPage = () => {
   useEffect(() => {
     const hash = location.hash;
     if (hash) {
-      setTimeout(() => { // Ensures elements are rendered
+      setTimeout(() => { 
         const id = hash.replace("#", "");
         const element = document.getElementById(id);
         if (element) {
@@ -19,7 +19,7 @@ const InfoPage = () => {
         }
       }, 100); // A slight delay can help with timing issues
     }
-  }, [location.hash]); // Depend on hash to re-run
+  }, [location.hash]); 
 
   const handleSearch = async (e) => {
     e.preventDefault();

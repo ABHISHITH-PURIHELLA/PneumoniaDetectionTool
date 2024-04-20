@@ -2,22 +2,22 @@ const sql = require('mssql/msnodesqlv8');
 
 // Your SQL Server configuration
 const config = {
-  //user: 'ABHI-_-\purih', // Your database username
-  server: '(localdb)\MSSQLLocalDB', // Your database server (use server IP or hostname)
-  database: 'myProjectDB', // Your database name
+  //user: 'ABHI-_-\purih', //  Database username
+  server: '(localdb)\MSSQLLocalDB', //  Database server
+  database: 'myProjectDB', //  Database name
   driver: 'msnodesqlv8',
   options: {
     enableArithAbort: true,
-    //encrypt: true, // Use this if you're on Windows Azure or if your SQL Server requires encrypted connections
-    trustServerCertificate: true // Use this if you're on a local development environment
+
+    trustServerCertificate: true // This certificate should be ON when on a local development environment
   },
-  connectionString: 'DSN=MyLocalDBDSN'
+  connectionString: 'DSN=MyLocalDBDSN'  //Created a local DSN to connect my DB and using the DSN as a connection string.
 };
 
 // Asynchronous function to get the connection
 async function getConnection() {
   try {
-    // Make sure to await for the connection
+    // Awaiting for the connection
     const pool = await sql.connect(config);
     console.log('Connected to the database!');
     return pool;
@@ -27,8 +27,8 @@ async function getConnection() {
   }
 }
 
-// Export the connection function
+// Exporting the connection function and sql to use in authDBrequests.cjs
 module.exports = {
   getConnection,
-  sql // Export the sql object to use in other parts of your application
+  sql 
 };

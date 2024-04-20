@@ -1,7 +1,10 @@
 // server/index.js
 
+//const attachDiagnosticsRoutes = require('./diagnosticsServer.cjs');
+//const loginSignupReqs = require('./authDBRequests.cjs');
+//const cors = require('cors');
+//app.use(cors());
 
-/*
 const express = require('express');
 
 const fileUpload = require('express-fileupload');
@@ -15,6 +18,7 @@ app.use(express.json());
 const UPLOAD_FOLDER = path.join(__dirname, 'static/uploads');
 const ALLOWED_EXT = new Set(['png', 'jpg', 'jpeg']);
 
+const predictionServer = (app)=> {
 // Middleware to handle file uploads
 //app.use(fileUpload());
 app.use(fileUpload({
@@ -79,21 +83,16 @@ app.post('/upload', (req, res) => {
     return res.status(400).send('Only png, jpg, jpeg images are allowed!');
   }
 });
+}
 
-*/
-const attachDiagnosticsRoutes = require('./diagnosticsServer.cjs');
-const loginSignupReqs = require('./authDBRequests.cjs');
-const predictionServer = require('./predictionParentServer.cjs')
-const express = require('express');
-const cors = require('cors');
-const app = express();
-app.use(express.json());
-app.use(cors());
-attachDiagnosticsRoutes(app);
-loginSignupReqs(app);
-predictionServer(app);
+module.exports = predictionServer;
+
+//attachDiagnosticsRoutes(app);
+//loginSignupReqs(app);
 //app.use(disgnosticServer)
+/*
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+*/

@@ -1,9 +1,12 @@
 
 //w3szOS90YFmCi3SdOpPxeeoHkecId1WN7bRZmZRDuvg
-// 3624fb03238440b180cb4473a5afce37
+// 3624fb03238440b180cb4473a5afce37 - hereApiKey
 // ctEzMqC9mv78aFYIAeBc
 
-const axios = require('axios');
+const axios = require('axios'); /// JS library to make HTTP requests to server to retrieve data
+
+//Formula to calculate the distance using difference in latitude and longitude
+//Used here to sort the list of centers by distance ---- ******Showing the centers that are close to your Area******
 
 const haversine = (lat1, lon1, lat2, lon2) => {
     const R = 6371e3; // metres
@@ -27,7 +30,7 @@ const haversine = (lat1, lon1, lat2, lon2) => {
       const hereApiKey = '3624fb03238440b180cb4473a5afce37';
       const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json`;
       
-      // Example using a geocoding service to get latitude and longitude
+      // Gather the Area coordinates using the parameters below ---- Retrieving the data(GET operation)
       const geoResponse = await axios.get(geocodeUrl, {
         params: {
           q: areaCode,
@@ -38,8 +41,11 @@ const haversine = (lat1, lon1, lat2, lon2) => {
         }
       });
       if (geoResponse.data.total_results === 0) {
+        // Returns this message if there is no info about the area code
         return res.status(404).json({ message: 'No geographic coordinates found for the provided area code.' });
       }
+
+      //Sending the data to overpass API and using the amenity = clinic condition to get details of only clinics
   
       const { lat, lng } = geoResponse.data.results[0].geometry;
       const radius = 30 * 1609.34; // 30 miles in meters
@@ -57,6 +63,11 @@ const haversine = (lat1, lon1, lat2, lon2) => {
       const response = await axios.get(overpassUrl, { params: { data: overpassQuery } });
       //res.json(response.data);
       //console.log(response.data);
+
+
+      /******Filtering the data retrieved based on our Requirement*********/
+      //Here we are filtering the data that mainly have the data for these sections and sorting them based on the distance.
+
       let clinicsData = response.data.elements.map(element => {
         const distance = haversine(lat, lng, element.lat, element.lon);
         return{
@@ -75,13 +86,15 @@ const haversine = (lat1, lon1, lat2, lon2) => {
       clinicsData.sort((a, b) => a.distance - b.distance);
   
       res.json(clinicsData);
-      //res.json(clinicsData);
+      
     } catch (error) {
       console.error('Error in API calls:', error);
       res.status(500).json({ message: 'Error fetching data' });
     }
   });
 }
+
+//Exporting it to server file to run it.
 
 module.exports = attachDiagnosticRoutes;
   

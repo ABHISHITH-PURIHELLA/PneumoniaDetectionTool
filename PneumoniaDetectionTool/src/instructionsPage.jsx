@@ -1,5 +1,5 @@
 import React from "react";
-import './instructionsPage.css'; // Ensure you have this CSS file to style the page
+import './instructionsPage.css'; 
 
 const InstructionsPage = () => {
     return (

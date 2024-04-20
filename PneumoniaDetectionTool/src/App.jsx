@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 //import { LoginForm, SignUpForm } from './authPages.jsx';
-import LoginForm from './LoginForm';  // Make sure the path is correct
+import LoginForm from './LoginForm';  
 import InstructionsPage from './instructionsPage.jsx';
-import SignUpForm from './SignUpForm';  // Make sure the path is correct
+import SignUpForm from './SignUpForm';  
 import TestPage from './testpage'; 
 import InfoPage from './infoPage.jsx';
 import './App.css'; 
@@ -27,16 +27,16 @@ const App = () => {
       const colorStart = `hsl(${hueStart}, 70%, 85%)`;
       const colorEnd = `hsl(${hueEnd}, 70%, 55%)`;
 
-      // Set the new colors as CSS variables
+      // Setting the new colors as CSS variables
       document.documentElement.style.setProperty('--gradient-start', colorStart);
       document.documentElement.style.setProperty('--gradient-end', colorEnd);
     }
 
-    // Update the background gradient every 10 seconds
+    // Updating the background gradient every 10 seconds
     updateBackgroundGradient();
     const intervalId = setInterval(updateBackgroundGradient, 10000);
 
-    // Clean up the interval on component unmount
+    // Cleaning up the interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
@@ -59,7 +59,7 @@ const App = () => {
   };
 
   const handleTakeTestClick = () => {
-    navigate('/test'); // This navigates to the TestPage
+    navigate('/test'); //  Navigating to the TestPage
     setDropdownOpen(false);
   };
 
@@ -73,16 +73,16 @@ const App = () => {
   }
   const handleNavigateToInfo = () => {
     navigate('/info');
-    handleDropdownItemClick(); // Reuse the logic to close the dropdown
+    handleDropdownItemClick(); // Reusing the logic to close the dropdown
   };
 
   const handleNavigateToInstructions = () => {
     navigate('/instructions');
-    handleDropdownItemClick(); // Reuse the logic to close the dropdown
+    handleDropdownItemClick(); 
   };
 
   const handleBlur = (event) => {
-    // Check if the new focused element is not within the dropdown
+    // Checking if the new focused element is not within the dropdown
     if (!event.currentTarget.contains(event.relatedTarget)) {
       setDropdownOpen(false);
     }
@@ -98,7 +98,7 @@ const App = () => {
     if (currentPage === 'test') {
       return <TestPage onGoBack={() => setCurrentPage('home')} />;
     } else {
-      // The rest of the home page content
+      
       return (
         <header className="header">
           <h1>A Guide for your well being.</h1>
