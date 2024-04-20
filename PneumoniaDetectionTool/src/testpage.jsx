@@ -1,12 +1,33 @@
 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import './infoPage.css';
 
-const TestPage = ({ onGoBack }) => {
+const TestPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [predictionResult, setPredictionResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Loading...');
+  const loadingMessages = [
+    'Loading...',
+    'Do not foget to take your pills on time! if any...',
+    'Stay Hydrated! Summer is Here :B'
+  ];
+  let messageIndex = 0;
+
+  useEffect(() => {
+    if (loading) {
+      const intervalId = setInterval(() => {
+        const message = loadingMessages[messageIndex];
+        const displayMessage = (messageIndex === 1 || messageIndex === 2) ? <strong>{message}</strong> : message;       
+        setLoadingMessage(displayMessage);
+        messageIndex = (messageIndex + 1) % loadingMessages.length;
+      }, 3000);
+  
+      return () => clearInterval(intervalId);
+    }
+  }, [loading]);
   const navigate = useNavigate();
   
 
@@ -16,6 +37,7 @@ const TestPage = ({ onGoBack }) => {
 
   const handleSubmit = () => {
     if (selectedImage) {
+      setPredictionResult(null);
       setLoading(true);
       const formData = new FormData();
       formData.append('image_upload', selectedImage);
@@ -48,8 +70,12 @@ const TestPage = ({ onGoBack }) => {
       {selectedImage && (
         <div style={{ textAlign: 'center' }}>
           <img src={URL.createObjectURL(selectedImage)} alt="Preview" style={{ maxWidth: '15%', height: 'auto', marginBottom: '10px' }} />
-          <button onClick={handleSubmit} style={{ display: 'block', margin: 'auto' }}>Submit Image</button>
-          {loading && <p>Loading...</p>}
+          <div className='submit-container'>
+          <button onClick={handleSubmit} disabled={loading} style={{ display: 'block', margin: 'auto' }}>Submit Image</button>
+          {loading && (<div>
+            <div className="loader_testpage"></div>
+          <p>{loadingMessage}</p></div>)}
+          </div>
         </div>
       )}
 
