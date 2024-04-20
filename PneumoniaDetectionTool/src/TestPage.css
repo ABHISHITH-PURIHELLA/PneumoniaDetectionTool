@@ -1,0 +1,44 @@
+/* TestPage.css */
+
+/* Container for the doctor animation and cloud box */
+.doctor-container {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Doctor animation */
+  .doctor-animation {
+    background-image: url('/assets/doctor.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 200px; /* Adjust the width as needed */
+    height: 200px; /* Adjust the height as needed */
+    margin-right: 20px; /* Adjust the margin as needed */
+    animation-name: doctor-slide-in;
+    animation-duration: 1s; /* Adjust the duration as needed */
+  }
+  
+  /* Cloud box */
+  .cloud-box {
+    background-color: #ffffff; /* Background color of the cloud box */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for the cloud box */
+  }
+  
+  /* Keyframes for doctor slide-in animation */
+  @keyframes doctor-slide-in {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  

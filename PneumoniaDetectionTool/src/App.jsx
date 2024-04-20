@@ -1,12 +1,23 @@
+
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { LoginForm, SignUpForm } from './authPages.jsx';
+//import { LoginForm, SignUpForm } from './authPages.jsx';
+import LoginForm from './LoginForm';  // Make sure the path is correct
+import InstructionsPage from './instructionsPage.jsx';
+import SignUpForm from './SignUpForm';  // Make sure the path is correct
 import TestPage from './testpage'; 
 import InfoPage from './infoPage.jsx';
 import './App.css'; 
 
 
 const App = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
+  const [showLoginForm, setShowLoginModal] = useState(false);
+  const [showSignUpForm, setShowSignupModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Function to generate random colors for the gradient
@@ -29,12 +40,23 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState('home');
-  const [showLoginForm, setShowLoginModal] = useState(false);
-  const [showSignUpForm, setShowSignupModal] = useState(false);
-  const navigate = useNavigate();
-  
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    setShowLoginModal(false);
+    navigate('/');
+  };
+
+  const handleSignUpSuccess = () => {
+    setShowSignupModal(false); // This will close the sign-up modal
+    //navigate('/login', { state: { fromSignUp: true } });
+    setShowLoginModal(true);
+  };
 
   const handleTakeTestClick = () => {
     navigate('/test'); // This navigates to the TestPage
@@ -51,6 +73,11 @@ const App = () => {
   }
   const handleNavigateToInfo = () => {
     navigate('/info');
+    handleDropdownItemClick(); // Reuse the logic to close the dropdown
+  };
+
+  const handleNavigateToInstructions = () => {
+    navigate('/instructions');
     handleDropdownItemClick(); // Reuse the logic to close the dropdown
   };
 
@@ -86,6 +113,8 @@ const App = () => {
     setShowSignupModal(true);
   };
 
+ 
+
 
   return (
     
@@ -96,9 +125,9 @@ const App = () => {
           {dropdownOpen && (
             <div className="dropdown">
               
-              {/*<button className="dropdown-item" onClick={() => handlePageChange('test')}>Take a Test</button>*/}
+              
               <button className="dropdown-item" onClick={handleTakeTestClick}>Take a Test</button>
-              <a href="#instructions" className="dropdown-item" onClick={handleDropdownItemClick}>Instructions for Test</a>
+              <button className="dropdown-item" onClick={handleNavigateToInstructions}>Instructions for Test</button>
               
               <button className="dropdown-item" onClick={handleNavigateToInfo}>Info</button>
             </div>
@@ -107,24 +136,31 @@ const App = () => {
         <div className="logo">ToolAtYour'Tip</div>
         
         <div className="auth-buttons">
-          {/*<a href="/">Home</a>*/}
-          <Link to="/" className='login-button'>Home</Link>         
-          <button className="login-button" onClick={() => setShowLoginModal(true)}>Log in</button>
-          <button className="signup-button" onClick={() => setShowSignupModal(true)}>Sign up</button>
+          <Link to="/" className='login-button'>Home</Link>
+          {!isLoggedIn ? (
+            <>
+              <button className="login-button" onClick={() => setShowLoginModal(true)}>Log in</button>
+              <button className="signup-button" onClick={() => setShowSignupModal(true)}>Sign up</button>
+            </>
+          ) : (
+            <button className="login-button" onClick={handleLogout}>Log out</button>
+          )}
         </div>
       </nav>
       {renderContent()}
-      {showLoginForm && <LoginForm onClose={() => setShowLoginModal(false)} onSignUpClick={openSignUpModal} onSuccess={() => setCurrentPage('home')} />}
-      {showSignUpForm && <SignUpForm onClose={() => setShowSignupModal(false)} onSuccess={() => setCurrentPage('home')} />}
+      {showLoginForm && <LoginForm onClose={() => setShowLoginModal(false)} onSignUpClick={openSignUpModal} onSuccess={handleLoginSuccess} />}
+      {showSignUpForm && <SignUpForm onClose={() => setShowSignupModal(false)} onSuccess={handleSignUpSuccess} />}
       <Routes>
         
         <Route path="/test" element={<TestPage />} />
         <Route path="/info" element={<InfoPage />} />
+        <Route path='/instructions' element={<InstructionsPage />} />
         
       </Routes>
       <footer className="footer-links">
         <Link to="/info#diagnostic-centers">List of Diagnostic Centers</Link>
         <Link to="/info#contact-us">Contact Us</Link>
+        <Link to= "/instructions">Tool'Tips</Link>
       </footer>
       
     </div>
@@ -133,6 +169,4 @@ const App = () => {
 };
 
 export default App;
-
-
 

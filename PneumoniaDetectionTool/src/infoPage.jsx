@@ -6,7 +6,7 @@ const InfoPage = () => {
   const [areaCode, setAreaCode] = useState('');
   const [clinics,setClinics] = useState([]);
   const location = useLocation();
-  
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
     const hash = location.hash;
@@ -23,6 +23,7 @@ const InfoPage = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:3001/search-clinics', {
           method: 'POST',
@@ -45,25 +46,30 @@ const InfoPage = () => {
   } catch (error) {
       console.error('Error fetching clinics:', error);
   }
+  finally{
+    setLoading(false);
+  }
   };
 
 
   return (
     
     <div className='info-page-container'>
+      
       <section id="diagnostic-centers">
         <div className='diagnostic-centers-title'>
         <h2>List of Diagnostic Centers</h2>
         <form onSubmit={handleSearch} style={{margin: '20px 0'}}>
           <input
             type="text"
-            placeholder="Enter Area Code"
+            placeholder="Enter Area-Code (or) City"
             value={areaCode}
             onChange={(e) => setAreaCode(e.target.value)}
             style={{marginRight: '10px'}}
           />
-          <button type="submit">Search</button>
           
+          <button type="submit" disabled={loading}>Search</button>
+          {loading && <div className="loader"></div>} 
         </form> </div>
         
         <div className="card-container">
@@ -75,7 +81,7 @@ const InfoPage = () => {
                 <p>Email: {clinic.email ?? 'Not available'}</p>
                 <p>Phone: {clinic.phone ?? 'Not available'}</p>
                 {clinic.website && (
-                  <p>Website: <a href={clinic.website} target="_blank" rel="noopener noreferrer">{clinic.website}</a></p>
+                  <p>Website: <a href={clinic.website} target="_blank" rel="noopener noreferrer">{clinic.name}</a></p>
                 )}
                 <p>Opening Hours: {clinic.openingHours ?? 'Not available'}</p>
               </div>
@@ -87,6 +93,7 @@ const InfoPage = () => {
       
 
       </section>
+
       <section id="contact-us" className="contact-us-container">
        <div className="scrolling-container">
         <div className="scrolling-content">
@@ -94,6 +101,7 @@ const InfoPage = () => {
         </div>
        </div>
       </section>
+      
 
     </div>
   );
