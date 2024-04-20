@@ -9,6 +9,7 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const { predictResult, loadSavedModel } = require('./predict.cjs'); 
 const attachDiagnosticsRoutes = require('./diagnosticsServer.cjs');
+const loginSignupReqs = require('./authDBRequests.cjs');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -82,6 +83,7 @@ app.post('/upload', (req, res) => {
 
 
 attachDiagnosticsRoutes(app);
+loginSignupReqs(app);
 //app.use(disgnosticServer)
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
