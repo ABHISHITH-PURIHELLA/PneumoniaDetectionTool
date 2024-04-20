@@ -1,17 +1,21 @@
 
 const express = require('express');
-const { getConnection, sql } = require('./dataBase.cjs'); // Import your database connection setup
+const { getConnection, sql } = require('./dataBase.cjs'); // Importing database connection setup
 const app = express();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-app.use(express.json()); // Middleware for parsing JSON
+app.use(express.json()); 
 
 // Endpoint to search for clinics by area code
-const loginSignupReqs = (app)=> { // Example for signup endpoint
+const loginSignupReqs = (app)=> { 
+  //signup endpoint to post the data to DB
     app.post('/signup', async (req, res) => {
       const { userName, userPwd, userEmail, userCity, userPhone } = req.body;
       try {
+
+        /****Connect DB to send the user Data******/
+
         const pool = await getConnection();
         const hashedPassword = await bcrypt.hash(userPwd, saltRounds);
         await pool.request()
@@ -20,7 +24,8 @@ const loginSignupReqs = (app)=> { // Example for signup endpoint
         .input('Email', sql.VarChar(255), userEmail)
         .input('City', sql.VarChar(255), userCity)
         .input('Phone', sql.VarChar(255), userPhone)
-        //.execute('InsertUser');
+
+        /***Executing insert operation directly after SQL connection to put the signup details into DB****/
         .query(`INSERT INTO myProjectDB.dbo.users (Username, Password, Email, City, Phone) VALUES (@UserName, @UserPassword, @Email, @City, @Phone)`);
     
         res.status(201).json({ message: 'User created successfully' });
@@ -30,13 +35,16 @@ const loginSignupReqs = (app)=> { // Example for signup endpoint
       }
     });
     
-    // Example for login endpoint
+   // Login Endpoint to post the result
     app.post('/login', async (req, res) => {
       const { userName, userPwd } = req.body;
       try {
         const pool = await getConnection();
         const result = await pool.request()
           .input('Username', sql.VarChar, userName)
+
+          /*******Finding if the user exists in the DB  **********/
+          
           .query(`SELECT Password FROM myProjectDB.dbo.Users WHERE Username = @UserName`);
     
         if (result.recordset.length > 0) {

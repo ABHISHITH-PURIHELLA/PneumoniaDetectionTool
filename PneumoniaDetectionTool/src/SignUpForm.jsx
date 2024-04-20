@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import { FaUser, FaLock } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPhone, faAddressCard } from '@fortawesome/free-solid-svg-icons';
+
 import { useNavigate } from 'react-router-dom';
 import './authPages.css';
 const InputBox = ({ type, name, placeholder, value, icon, onChange }) => (
@@ -46,9 +49,9 @@ const SignUpForm = ({ onClose, onSuccess }) => {
       });
 
       if (!response.ok) {
-        const errorData = await response.text(); // Use .text() initially
+        const errorData = await response.text(); 
         try {
-          const jsonError = JSON.parse(errorData); // Then try to parse it as JSON
+          const jsonError = JSON.parse(errorData);
           throw new Error(`Signup failed: ${jsonError.message}`);
         } catch (jsonParseError) {
           throw new Error(`Signup failed: ${errorData}`);
@@ -84,7 +87,7 @@ const SignUpForm = ({ onClose, onSuccess }) => {
             name="userEmail"
             placeholder="Enter your email"
             value={user.userEmail}
-            icon={<FaUser className='icon' />}
+            icon={<FontAwesomeIcon icon={faAddressCard} className="icon" /> }
             onChange={handleChange}
           />
           <InputBox
@@ -100,7 +103,7 @@ const SignUpForm = ({ onClose, onSuccess }) => {
             name="userCity"
             placeholder="Enter your city"
             value={user.userCity}
-            icon={<FaUser className='icon' />} // Replace with city icon if you have
+            icon={<FontAwesomeIcon icon={faAddressCard} className="icon" /> } 
             onChange={handleChange}
           />
           <InputBox
@@ -108,7 +111,7 @@ const SignUpForm = ({ onClose, onSuccess }) => {
             name="userPhone"
             placeholder="Enter your phone"
             value={user.userPhone}
-            icon={<FaUser className='icon' />} // Replace with phone icon if you have
+            icon={<FontAwesomeIcon icon={faPhone} className="icon" /> } 
             onChange={handleChange}
           />
           {successMessage && <div className='success-message'>{successMessage}</div>}

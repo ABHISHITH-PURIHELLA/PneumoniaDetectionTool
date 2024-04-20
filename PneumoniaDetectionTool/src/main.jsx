@@ -4,7 +4,7 @@ import App from './App.jsx';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 
-// Get the root container to mount your app
+// Getting the root container to mount the app
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement); // Create a root.
 

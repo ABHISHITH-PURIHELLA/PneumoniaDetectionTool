@@ -40,8 +40,8 @@ html, body {
 .h2 {
   text-align: center;
   font-size: 2rem;
-  color: #333; /* Or any color that fits your design */
-  margin-bottom: 2rem; /* Space between title and cards */
+  color: #333; 
+  margin-bottom: 2rem; 
 }
 .menu-button {
   
